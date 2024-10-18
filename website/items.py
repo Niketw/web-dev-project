@@ -6,11 +6,12 @@ account = ''
 
 items = Blueprint('items', __name__)
 
+
 @items.route('/necklaces', methods=['GET', 'POST'])
 def necklace():
     global logged_in, account
     user = db.accounts.find_one({"logged_in": True})
-    if (user is None):
+    if user is None:
         account = ''
         logged_in = False
     else:
@@ -31,6 +32,7 @@ def necklace():
             else:
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('items.html', items=necklaces, logged_in=logged_in, account=account, item_name="necklace")
+
 
 @items.route('/rings', methods=['GET', 'POST'])
 def rings():
@@ -58,6 +60,7 @@ def rings():
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('items.html', items=rings, logged_in=logged_in, account=account, item_name="rings")
 
+
 @items.route('/ear-rings', methods=['GET', 'POST'])
 def ear_rings():
     global logged_in, account
@@ -83,6 +86,7 @@ def ear_rings():
             else:
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('items.html', items=ear_rings, logged_in=logged_in, account=account, item_name="ear rings")
+
 
 @items.route('/bracelates', methods=['GET', 'POST'])
 def bracelates():
@@ -110,6 +114,7 @@ def bracelates():
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('items.html', items=bracelates, logged_in=logged_in, account=account, item_name="bracelates")
 
+
 @items.route('/products', methods=['GET', 'POST'])
 def products():
     global logged_in, account
@@ -133,7 +138,9 @@ def products():
                 return redirect('/login')
             else:
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
-    return render_template('products.html', items=bracelates, logged_in=logged_in, account=account, rings=rings, ear_rings=ear_rings, bracelates=bracelates, necklaces=necklaces)
+    return render_template('products.html', items=bracelates, logged_in=logged_in, account=account, rings=rings,
+                           ear_rings=ear_rings, bracelates=bracelates, necklaces=necklaces)
+
 
 @items.route("/plique-A'-jour", methods=['GET', 'POST'])
 def plique():
@@ -157,6 +164,7 @@ def plique():
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
 
+
 @items.route("/anant", methods=['GET', 'POST'])
 def anant():
     global logged_in, account
@@ -178,6 +186,7 @@ def anant():
             else:
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
+
 
 @items.route("/mirosa", methods=['GET', 'POST'])
 def mirosa():
@@ -201,6 +210,7 @@ def mirosa():
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
 
+
 @items.route("/initials", methods=['GET', 'POST'])
 def initials():
     global logged_in, account
@@ -222,6 +232,7 @@ def initials():
             else:
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
+
 
 @items.route("/amour", methods=['GET', 'POST'])
 def amour():
@@ -245,6 +256,7 @@ def amour():
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
 
+
 @items.route("/twinning", methods=['GET', 'POST'])
 def twinning():
     global logged_in, account
@@ -266,6 +278,7 @@ def twinning():
             else:
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
+
 
 @items.route("/inayat", methods=['GET', 'POST'])
 def inayat():
@@ -289,6 +302,7 @@ def inayat():
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
 
+
 @items.route("/ladanza", methods=['GET', 'POST'])
 def ladanza():
     global logged_in, account
@@ -310,6 +324,7 @@ def ladanza():
             else:
                 db.accounts.update_one({'_id': user['_id']}, {'$push': {'cart': form_id['form_id']}})
     return render_template('collections.html', items=collection, logged_in=logged_in, account=account)
+
 
 @items.route("/dashavatar", methods=['GET', 'POST'])
 def dashavatar():

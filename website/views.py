@@ -10,6 +10,7 @@ account = ''
 
 views = Blueprint('views', __name__)
 
+
 @views.route('/')
 @views.route('/home')
 def index():
@@ -25,12 +26,13 @@ def index():
     images = db.home_item.find()
     return render_template('index.html', logged_in=logged_in, account=account, home_item=images)
 
+
 @views.route('/cart', methods=['GET', 'POST'])
 def cart():
     global logged_in, account
-        
+
     user = db.accounts.find_one({"logged_in": True})
-    if (user is None):
+    if user is None:
         return redirect('/login')
     account = user['username']
     logged_in = True
@@ -38,29 +40,30 @@ def cart():
     user_cart = user['cart']
     cart_items = []
     total = 0
-        
+
     for item in user_cart:
         if item in item_frequency.keys():
             item_frequency[item] += 1
         else:
             item_frequency.update({item: 1})
-        
+
         total += db.items.find_one({"_id": bson.ObjectId(item)})['price']
-        
+
     counter = 0
     for item in item_frequency.keys():
         cart_items.append(db.items.find_one({"_id": bson.ObjectId(item)}))
         cart_items[counter].update({"qty": item_frequency[item]})
         counter += 1
-            
+
     if 'form_id' in request.form:
         form_id = request.form
         cart_new = db.accounts.find_one({"_id": user['_id']})['cart']
         cart_new.remove(form_id['form_id'])
         db.accounts.update_one({"_id": user['_id']}, {"$set": {"cart": cart_new}})
         return redirect('/cart')
-        
+
     return render_template('cart.html', logged_in=logged_in, account=account, items=cart_items, total=total)
+
 
 @views.route('/admin', methods=['GET', 'POST'])
 def admin():
@@ -71,7 +74,7 @@ def admin():
         item_description = request.form.get('discription')
         hover_image = request.form.get('hover_image')
         collection = request.form.get('collection')
-        
+
         db.items.insert_one(
             {
                 "type": item_type,
@@ -79,15 +82,17 @@ def admin():
                 "price": int(item_price),
                 "hover_image": f"../static/assets/{hover_image}",
                 "discription": str(item_description),
-                "collection" : str(collection)
+                "collection": str(collection)
             }
         )
 
     return render_template('admin.html')
 
+
 @views.route('/about')
 def about_us():
     return render_template('aboutus.html')
+
 
 @views.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -113,7 +118,7 @@ def contact():
         )
 
         msg = Message("PCJ Agent : Mr Deepak Singh", sender='noreply@gmail.com', recipients=[email])
-        msg.body = "thank you for contacting us\n "+"your agent : Mr. deepak Singh\n"+"Email : Deepak-Singh-PCJ@pcj.ac.in\n"+"Mobile no. : 6376720653\n"+"For further more you can vist our nearest showroom\n"+"Once again thank's for contacting us ."
+        msg.body = "thank you for contacting us\n " + "your agent : Mr. deepak Singh\n" + "Email : Deepak-Singh-PCJ@pcj.ac.in\n" + "Mobile no. : 6376720653\n" + "For further more you can vist our nearest showroom\n" + "Once again thank's for contacting us ."
         mail.send(msg)
 
     return render_template('contact_us.html', logged_in=logged_in, account=account)
